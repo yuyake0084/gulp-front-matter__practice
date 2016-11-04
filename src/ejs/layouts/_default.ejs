@@ -14,8 +14,9 @@
   <% }); %>
 </head>
 <body>
+  <%- include(`${layoutsDir}/_header`); %>
   <%- contents %>
-  <% console.log(file); %>
+  <% console.log(file.data); %>
   <% file.data.js.forEach(jsItem => { %>
   <script src="<%= jsItem %>"></script>
   <% }); %>
