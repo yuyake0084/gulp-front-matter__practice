@@ -7,7 +7,7 @@ import wrapper from 'layout-wrapper';
 
 const path = {
   ejs: {
-    layoutDir: './src/ejs/layouts',
+    layoutDir: `${__dirname}/src/ejs/layouts`,
     src: [
       './src/ejs/**/*.ejs',
       '!./src/ejs/**/_*.ejs'
@@ -15,18 +15,16 @@ const path = {
     dist: './htdocs/'
   },
   json: {
-    package: './package.json';
+    package: './package.json',
     newsList: './src/data/newsList.json'
   }
 };
 
-
 global.jsonData = {};
 jsonData.newsListJson = require(path.json.newsList);
 
-
 gulp.task('ejs', () => {
-  var extName = require(path.package);
+  var extName = require(path.json.package);
 
   gulp.src(path.ejs.src)
     .pipe(plumber())
@@ -37,10 +35,11 @@ gulp.task('ejs', () => {
     .pipe(wrapper({
       layout: path.ejs.layoutDir,
       data: {
-        name: 'ホゲのサイト'
+        name: 'ホゲのサイト',
+        layoutsDir: path.ejs.layoutDir
       },
       engine: 'ejs',
-      frontMatterProp: 'frontMatter'
+      frontMatterProp: 'data'
     }))
     .pipe(ejs(extName, { 'ext': '.html' }))
     .pipe(gulp.dest(path.ejs.dist));
